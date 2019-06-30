@@ -1,9 +1,8 @@
 package com.vertisage.vms.resource;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +10,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/v1/visitor")
 public class Visitor {
+
+    private MongoTemplate mongoTemplate;
+
+    public Visitor(MongoTemplate mongoTemplate){
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -24,5 +29,10 @@ public class Visitor {
         visitor.put("mobileNumber", "9811005678");
         visitor.put("email", "amit.pccs@gmail.com");
         return visitor;
+    }
+
+    @PostMapping
+    public void createVisitor(@RequestBody com.vertisage.vms.domain.Visitor newVisitor){
+            this.mongoTemplate.insert(newVisitor);
     }
 }
