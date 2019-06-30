@@ -4,8 +4,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("api/v1/visitor")
@@ -18,17 +17,14 @@ public class Visitor {
     }
 
     @RequestMapping(
+            path = "/all",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, String> getVisitor(){
-
-        Map<String, String> visitor = new HashMap<>();
-        visitor.put("firstName", "Amit");
-        visitor.put("lastName", "Singh");
-        visitor.put("mobileNumber", "9811005678");
-        visitor.put("email", "amit.pccs@gmail.com");
-        return visitor;
+    public Collection<com.vertisage.vms.domain.Visitor> getVisitor(){
+        Collection<com.vertisage.vms.domain.Visitor> visitors
+                = this.mongoTemplate.findAll(com.vertisage.vms.domain.Visitor.class);
+        return visitors;
     }
 
     @PostMapping
